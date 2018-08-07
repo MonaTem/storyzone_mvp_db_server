@@ -24,7 +24,7 @@ exports.down = function(knex, Promise) {
     .then(dropMembersTable)
 
 function dropMembersTable() {
-  return knex.schema.dropTable('member');
+  return knex.schema.dropTable('members');
   }
 
 function dropStoriesTable() {
