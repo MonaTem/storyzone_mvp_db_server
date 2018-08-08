@@ -9,6 +9,10 @@ exports.up = function(knex, Promise) {
       .then(createTourVideosTable)
       .then(addForeignKey0StoryOwners)
       .then(addForeignKey0Contributors)
+      .then(addForeignKey1Contributors)
+      .then(addForeignKey2Contributors)
+      .then(addForeignKey0StoriesandOwners)
+      .then(addForeignKey1StoriesandOwners)
 
 
     function createMembersTable() {
@@ -46,16 +50,33 @@ exports.up = function(knex, Promise) {
      function addForeignKey0Contributors(){
            return knex.raw('ALTER TABLE story_contributors ADD CONSTRAINT story_contributors_fk0 FOREIGN KEY (member_id) REFERENCES members(member_id)');
      }
+
+     function addForeignKey1Contributors(){
+           return knex.raw('ALTER TABLE story_contributors ADD CONSTRAINT story_contributors_fk1 FOREIGN KEY (story_owner_id) REFERENCES story_owners(story_owner_id)');
+     }
+
+     function addForeignKey2Contributors(){
+           return knex.raw('ALTER TABLE story_contributors ADD CONSTRAINT story_contributors_fk2 FOREIGN KEY (story_id) REFERENCES stories(story_id)');
+     }
+
+     function addForeignKey0StoriesandOwners() {
+           return knex.raw('ALTER TABLE stories_and_owners ADD CONSTRAINT stories_and_owners_fk0 FOREIGN KEY (story_owner_id) REFERENCES story_owners(story_owner_id)');
+     }
+
+     function addForeignKey1StoriesandOwners() {
+           return knex.raw('ALTER TABLE stories_and_owners ADD CONSTRAINT stories_and_owners_fk1 FOREIGN KEY (story_id) REFERENCES stories(story_id)');
+     }
 };
 
 exports.down = function(knex, Promise) {
-    return dropStoryOwnersTable()
-    .then (dropStoryContributorsTable)
-    .then(dropStoriesTable)
-    .then(dropMembersTable)
+    return dropStoryContributorsTable()
     .then(dropStoriesandOwnersTable)
     .then(dropEventsTable)
     .then(dropTourVideosTable)
+    .then(dropStoryOwnersTable)
+    .then(dropStoriesTable)
+    .then(dropMembersTable)
+
 
 function dropMembersTable() {
   return knex.schema.dropTable('members');
