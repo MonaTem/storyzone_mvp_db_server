@@ -1,4 +1,4 @@
-storiesexports.seed =  async function(knex, Promise) {
+exports.seed =  async function(knex, Promise) {
   // Deletes ALL existing entries
   await knex('members').del();
   await knex.raw("ALTER TABLE members ALTER COLUMN member_id RESTART WITH 1");
